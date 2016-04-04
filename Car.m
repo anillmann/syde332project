@@ -30,20 +30,37 @@ classdef Car
             else
                 % increment the speed
                 if ( obj.v < obj.v_max)
-                    obj.v = obj.v + 1;
+                    if(obj.v == 0)
+                        obj.v = 3;
+                    elseif(obj.v == 1 || obj.v == 2)
+                        obj.v = 4;
+                    elseif(obj.v == 3 || obj.v == 4)
+                        obj.v = 5;
+                    end
                 else
                     % if at max speed, randomly slow down
                     if (rand < obj.p_slow)
                        obj.v = obj.v - 1; 
                     end
                 end
-                if ( any( road(obj.x:(obj.x+obj.v)) ) )
-                   % find the first location, set the speed to before that
-                   obj.v = find( road(obj.x:(obj.x+obj.v)),1,'first' ) - obj.x - 1;
-                   % cannot set speed negative
-                   if (obj.v < 0)
-                       obj.v = 0;
-                   end
+                if (obj.x + obj.v <= size(road,1))
+                    if ( any( road(obj.x:(obj.x+obj.v)) ) )
+                       % find the first location, set the speed to before that
+                       obj.v = find( road(obj.x:(obj.x+obj.v)),1,'first' ) - obj.x - 1;
+                       % cannot set speed negative
+                       if (obj.v < 0)
+                           obj.v = 0;
+                       end
+                    end
+                else
+                    if ( any( road(obj.x:size(road,1)) ) )
+                       % find the first location, set the speed to before that
+                       obj.v = find( road(obj.x:size(road,1)),1,'first' ) - obj.x - 1;
+                       % cannot set speed negative
+                       if (obj.v < 0)
+                           obj.v = 0;
+                       end
+                    end
                 end
                 % drive
                 obj.x = obj.x + obj.v;
