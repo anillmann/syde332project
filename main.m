@@ -10,9 +10,21 @@ road = zeros(road_length,1);
 % initialize my car
 cars = Car(0,5,1);
 road(1) = 1;
+filename = 'test_332.gif';
 
 for i = 1:num_iterations
-   [cars, road] = timestep(cars, road); 
+   [road,cars] = timestep(road, cars);
+   bar(road);
+   drawnow
+   
+   frame = getframe(1);
+   im = frame2im(frame);
+   [imind,cm] = rgb2ind(im,256);
+   if i == 1;
+      imwrite(imind,cm,filename,'gif', 'Loopcount',inf);
+   else
+      imwrite(imind,cm,filename,'gif','WriteMode','append');
+   end
 end
 
 %{
