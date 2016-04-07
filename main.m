@@ -2,13 +2,14 @@ close all; clear all; clc;
 
 % model parameters
 road_length = 100;
+road_lanes = 2;
 num_iterations = 100;
 
 % define the road
-road = zeros(road_length,1);
+road = zeros(road_length,road_lanes);
 
-% initialize my car
-cars = Car(0,5,1);
+% init first car
+cars = Car(0,1,1);
 road(1) = 1;
 filename = 'test_332.gif';
 backup = 0;
@@ -20,11 +21,11 @@ for i = 1:num_iterations
    [road,cars,backup,merge_backup] = timestep(road, cars, backup, merge_backup);
    backup_history(i) = backup;
    merge_backup_history(i) = merge_backup;
-   backup
-   i
+   backup;
+   i;
    bar(road);
    drawnow
-   w = waitforbuttonpress;
+   %w = waitforbuttonpress;
    
    frame = getframe(1);
    im = frame2im(frame);
